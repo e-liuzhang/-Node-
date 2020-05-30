@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>留言板</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        /*控制滑动条不显示*/
+        ::-webkit-scrollbar{
+            display:none;
+        }
+        body{
+            background:url("../public/img/bg.jpg") no-repeat;
+            background-size: 100%;
+            overflow: hidden;
+        }
+        .my_container{
+            overflow:scroll;
+            background-color: rgba(0,0,0,0.3);
+            position: relative;
+        }
+        #main{
+            width: inherit;
+            height:700px;
+        }
+        #add{
+            width: 100px;
+            height: 100px;
+            background:url("../public/img/1.png") no-repeat 12px;
+            background-size: 100%;
+            margin: 20px 40px;
+            position: absolute;
+            cursor: pointer;
+            border:2px solid #ccc;
+            border-radius: 50%;
+        }
+        #review{
+            width: 850px;
+            height: 60px;
+            position: fixed;
+            top: 10px;
+            left: 350px;
+            background-color: rgba(0,0,0,0.6);
+            opacity: 0;
+            transition: 0.5s;
+        }
+        .my_row{
+            width: 800px;
+            position: absolute;
+            left: 20px;
+        }
+        #saying,#username{
+            width: 100%;
+        }
+        .my_form{
+            margin-top: 10px;
+        }
+        .form-group>input{
+            margin-left: 10px;
+        }
+        table{
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="add"></div>
+    <div class=" container my_container">
+        <div id="main">
+            <table class="table table-condensed table-hover table-striped">
+            	<thead>
+            	<tr>
+            		<th>发言者</th>
+                    <th>评论</th>
+                    <th>日期</th>
+            	</tr>
+            	</thead>
+            	<tbody>
+            	<tr>
+            		<td>流涨</td>
+                    <td>一个简单的发表个人评论的网站</td>
+                    <td>2020/5/30</td>
+            	</tr>
+                {{each comments}}
+                <tr>
+                    <td>{{ $value.name }}</td>
+                    <td>{{ $value.message }}</td>
+                    <td>{{ $value.dateTime }}</td>
+                </tr>
+                {{/each}}
+            	</tbody>
+            </table>
+        </div>
+        <div id="review">
+            <form class="form-inline my_form"  action="/review" method="get">
+                <div class="form-group col-md-2">
+                    <label class="sr-only" for="username">角色</label>
+                    <input type="text" class="form-control" id="username" placeholder="角色" name="name" minlength="2" maxlength="10">
+                </div>
+                <div class="form-group col-md-8">
+                    <label class="sr-only" for="saying">评论</label>
+                    <input type="text" class="form-control" id="saying" placeholder="评论" name="message" minlength="5" maxlength="20">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default">发送</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        window.onload=function () {
+            var main=id('main');
+            var add=id('add');
+            var review=id('review');
+            function id(obj) {
+                return document.getElementById(obj)
+            }
+            add.onclick=function () {
+                review.style.display='block';
+                review.style.opacity=1;
+            }
+            main.onclick=function (e) {
+                if( e.target !== add) {
+                    review.style.opacity=0;
+                    review.style.display='none';
+                }
+            }
+
+        }
+    </script>
+</body>
+</html>
